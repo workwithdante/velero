@@ -1,6 +1,6 @@
 velero: 
   schedules:
-    aws-backup-schedule:
+    - aws-backup-schedule:
         disabled: true
         schedule: "0 0 * * *"
         template:
@@ -17,7 +17,8 @@ velero:
             volumeSnapshotLocations:
             - aws-backup
     
-    minio-backup-schedule:
+    - minio-backup-schedule:
+        disabled: true
         schedule: "0 0 * * *"
         template:
             ttl: "72h"
@@ -33,71 +34,71 @@ velero:
             volumeSnapshotLocations:
             - default
 
-    credentials:
-        useSecret: true
-        existingSecret: velero-minio-credentials
-        secretContents:
-        cloud: |
-            [default]
-            aws_access_key_id = <TU_ACCESS_KEY>
-            aws_secret_access_key = <TU_SECRET_KEY>
+  credentials:
+      useSecret: true
+      existingSecret: velero-minio-credentials
+      secretContents:
+      cloud: |
+          [default]
+          aws_access_key_id = <TU_ACCESS_KEY>
+          aws_secret_access_key = <TU_SECRET_KEY>
 
-    deployNodeAgent: true
+  deployNodeAgent: true
 
-    initContainers:
-      - name: "velero-plugin-for-aws"
-        image: velero/velero-plugin-for-aws:v1.12.1
-        imagePullPolicy: IfNotPresent
-        volumeMounts:
-          - mountPath: /target
-            name: plugins
+  initContainers:
+    - name: "velero-plugin-for-aws"
+      image: velero/velero-plugin-for-aws:v1.12.1
+      imagePullPolicy: IfNotPresent
+      volumeMounts:
+        - mountPath: /target
+          name: plugins
 
-    configuration:
-        defaultVolumesToFsBackup: true
-        garbageCollectionFrequency: 15m0s
-        backupStorageLocation:
-          - name: "default"
-            provider: aws
-            bucket: vault-backups
-            default: true
-            config:
-              region: us-east-2
-              s3ForcePathStyle: "true"
-              s3Url: https://minio.mabecenter.org
-            credential:
-              name: velero-minio-credentials
-              key: cloud
+  configuration:
+      defaultVolumesToFsBackup: true
+      garbageCollectionFrequency: 15m0s
+      backupStorageLocation:
+        - name: "default"
+          provider: aws
+          bucket: vault-backups
+          default: true
+          config:
+            region: us-east-2
+            s3ForcePathStyle: "true"
+            s3Url: https://minio.mabecenter.org
+          credential:
+            name: velero-minio-credentials
+            key: cloud
 
-          - name: aws-backup
-            provider: aws
-            bucket: vault-backup-sierra-group
-            config:
-              region: us-east-2  # Cambiar la región si es necesario
-              s3ForcePathStyle: "false"  # Puede ser false si es un endpoint S3 compatible con AWS
-              s3Url: https://s3.amazonaws.com
-            credential:
-              name: velero-aws-credentials  # Asumiendo que este secreto ya existe con las credenciales de AWS
-              key: cloud
+        - name: aws-backup
+          provider: aws
+          bucket: vault-backup-sierra-group
+          config:
+            region: us-east-2  # Cambiar la región si es necesario
+            s3ForcePathStyle: "false"  # Puede ser false si es un endpoint S3 compatible con AWS
+            s3Url: https://s3.amazonaws.com
+          credential:
+            name: velero-aws-credentials  # Asumiendo que este secreto ya existe con las credenciales de AWS
+            key: cloud
 
-        volumeSnapshotLocation:
-          - name: default
-            provider: aws
-            config:
-              region: us-east-2
-              s3ForcePathStyle: "true"
-              s3Url: https://minio.mabecenter.org
-            credential:
-              name: velero-minio-credentials
-              key: cloud
+      volumeSnapshotLocation:
+        - name: default
+          provider: aws
+          config:
+            region: us-east-2
+            s3ForcePathStyle: "true"
+            s3Url: https://minio.mabecenter.org
+          credential:
+            name: velero-minio-credentials
+            key: cloud
 
-          - name: aws-backup
-            provider: aws
-            config:
-              region: us-east-2
-              s3ForcePathStyle: "false"
-              s3Url: https://s3.amazonaws.com
-            credential:
-              name: velero-aws-credentials
-              key: cloud
+        - name: aws-backup
+          provider: aws
+          config:
+            region: us-east-2
+            s3ForcePathStyle: "false"
+            s3Url: https://s3.amazonaws.com
+          credential:
+            name: velero-aws-credentials
+            key: cloud
 
-        defaultBackupStorageLocation: default
+      defaultBackupStorageLocation: default
