@@ -1,38 +1,38 @@
 velero: 
   schedules:
-    - aws-backup-schedule:
-        disabled: true
-        schedule: "0 0 * * *"
-        template:
-            ttl: "72h"
-            storageLocation: aws-backup
-            includedNamespaces:
-            - vaultwarden
-            excludedNamespaceScopedResources:
-            - persistentVolumeClaims
-            excludedClusterScopedResources:
-            - persistentVolumes
-            snapshotVolumes: false
-            defaultVolumesToFsBackup: true
-            volumeSnapshotLocations:
-            - aws-backup
+    aws-backup-schedule:
+      disabled: false
+      schedule: "0 0 * * *"
+      template:
+          ttl: "72h"
+          storageLocation: aws-backup
+          includedNamespaces:
+          - vaultwarden
+          excludedNamespaceScopedResources:
+          - persistentVolumeClaims
+          excludedClusterScopedResources:
+          - persistentVolumes
+          snapshotVolumes: false
+          defaultVolumesToFsBackup: true
+          volumeSnapshotLocations:
+          - aws-backup
     
-    - minio-backup-schedule:
-        disabled: true
-        schedule: "0 0 * * *"
-        template:
-            ttl: "72h"
-            storageLocation: default
-            includedNamespaces:
-            - vaultwarden
-            excludedNamespaceScopedResources:
-            - persistentVolumeClaims
-            excludedClusterScopedResources:
-            - persistentVolumes
-            snapshotVolumes: false
-            defaultVolumesToFsBackup: true
-            volumeSnapshotLocations:
-            - default
+    minio-backup-schedule:
+      disabled: false
+      schedule: "0 0 * * *"
+      template:
+          ttl: "72h"
+          storageLocation: default
+          includedNamespaces:
+          - vaultwarden
+          excludedNamespaceScopedResources:
+          - persistentVolumeClaims
+          excludedClusterScopedResources:
+          - persistentVolumes
+          snapshotVolumes: false
+          defaultVolumesToFsBackup: true
+          volumeSnapshotLocations:
+          - default
 
   credentials:
       useSecret: true
