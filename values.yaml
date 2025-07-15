@@ -18,7 +18,6 @@ velero:
             - aws-backup
     
     minio-backup-schedule:
-        disabled: true
         schedule: "0 0 * * *"
         template:
             ttl: "72h"
