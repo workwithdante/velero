@@ -8,10 +8,6 @@ velero:
           storageLocation: aws-backup
           includedNamespaces:
           - vaultwarden
-          excludedNamespaceScopedResources:
-          - persistentVolumeClaims
-          excludedClusterScopedResources:
-          - persistentVolumes
           snapshotVolumes: false
           defaultVolumesToFsBackup: true
           volumeSnapshotLocations:
