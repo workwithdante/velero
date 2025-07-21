@@ -25,10 +25,6 @@ velero:
           storageLocation: default
           includedNamespaces:
           - vaultwarden
-          excludedNamespaceScopedResources:
-          - persistentVolumeClaims
-          excludedClusterScopedResources:
-          - persistentVolumes
           snapshotVolumes: false
           defaultVolumesToFsBackup: true
           volumeSnapshotLocations:
