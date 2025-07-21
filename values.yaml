@@ -25,6 +25,7 @@ velero:
           storageLocation: default
           includedNamespaces:
           - vaultwarden
+          - gitea
           excludedNamespaceScopedResources:
           - persistentVolumeClaims
           excludedClusterScopedResources:
